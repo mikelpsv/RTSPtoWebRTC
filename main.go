@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/pion/webrtc/v2/pkg/media"
 	"log"
-	"github.com/pion/webrtc/pkg/media"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 func main() {
 	go StartHTTPServer()
 
-	url := "rtsp://admin:123456@192.168.88.90:554"
+	url := "rtsp://admin:123456@192.168.88.94:554"
 	sps := []byte{}
 	pps := []byte{}
 	fuBuffer := []byte{}

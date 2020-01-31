@@ -9,7 +9,7 @@ import (
 	"encoding/base64"
 
 	"github.com/gorilla/mux"
-	"github.com/pion/webrtc"
+	"github.com/pion/webrtc/v2"
 )
 
 // var DataChanelTest chan<- webrtc.RTCSample

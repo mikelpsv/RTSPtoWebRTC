@@ -41,7 +41,7 @@ type RtspClient struct {
 }
 
 func RtspClientNew() *RtspClient {
-	return &RtspClient{cseq: 1, rtsptimeout: 3, rtptimeout: 10, keepalivetime: 20, Signals: make(chan bool, 1), Outgoing: make(chan []byte, 100000)}
+	return &RtspClient{cseq: 1, rtsptimeout: 50, rtptimeout: 10, keepalivetime: 20, Signals: make(chan bool, 1), Outgoing: make(chan []byte, 100000)}
 }
 func (this *RtspClient) Open(uri string) (err error) {
 	if err := this.ParseUrl(uri); err != nil {
@@ -99,7 +99,7 @@ func (this *RtspClient) Write(method string, track, add string, stage bool, nore
 	if noread {
 		return
 	}
-	time.Sleep(time.Duration(1 * time.Second))
+	time.Sleep(time.Duration(3 * time.Second))
 	if responce, err := this.Read(); err != nil {
 		//log.Println(err)
 		return err
@@ -138,23 +138,6 @@ func (this *RtspClient) Read() (buffer []byte, err error) {
 	if err = this.socket.SetDeadline(time.Now().Add(this.rtsptimeout * time.Second)); err != nil {
 		return nil, err
 	}
-	/*
-		for {
-			n, err := this.socket.Read(tmp)
-			if err != nil{
-				if err != io.EOF {
-					log.Println("read error:", err)
-				}
-
-				return nil, err
-			}
-			read += n
-
-			//fmt.Println("got", n, "bytes.")
-			buffer = append(buffer, tmp[:n]...)
-			return buffer[:read], err
-		}
-	*/
 
 	if n, err := this.socket.Read(buffer); err != nil || n <= 2 {
 		return nil, err
