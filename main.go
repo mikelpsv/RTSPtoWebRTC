@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-
-	rtsp "github.com/deepch/sample_rtsp"
-	"github.com/pion/webrtc/v2/pkg/media"
+	"github.com/pion/webrtc/pkg/media"
 )
 
 var (
@@ -15,14 +13,14 @@ var (
 
 func main() {
 	go StartHTTPServer()
-	// url := "rtsp://admin:123456@171.25.232.42:1554/mpeg4cif"
-	url := "rtsp://admin:1234567@171.25.235.18/mpeg4"
+
+	url := "rtsp://admin:123456@192.168.88.90:554"
 	sps := []byte{}
 	pps := []byte{}
 	fuBuffer := []byte{}
 	count := 0
-	Client := rtsp.RtspClientNew()
-	Client.Debug = false
+	Client := RtspClientNew()
+	Client.Debug = true
 	syncCount := 0
 	preTS := 0
 	writeNALU := func(sync bool, ts int, payload []byte) {
@@ -34,6 +32,7 @@ func main() {
 		}
 		preTS = ts
 	}
+
 	handleNALU := func(nalType byte, payload []byte, ts int64) {
 		if nalType == 7 {
 			if len(sps) == 0 {
@@ -56,6 +55,7 @@ func main() {
 			}
 		}
 	}
+
 	if err := Client.Open(url); err != nil {
 		fmt.Println("[RTSP] Error", err)
 	} else {

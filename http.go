@@ -9,8 +9,7 @@ import (
 	"encoding/base64"
 
 	"github.com/gorilla/mux"
-	"github.com/pion/webrtc/v2"
-	//ice "github.com/pions/webrtc/internal/ice"
+	"github.com/pion/webrtc"
 )
 
 // var DataChanelTest chan<- webrtc.RTCSample
@@ -22,7 +21,7 @@ func StartHTTPServer() {
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("static/"))))
 
 	go func() {
-		err := http.ListenAndServe(":8080", r)
+		err := http.ListenAndServe(":8282", r)
 		if err != nil {
 		}
 	}()
@@ -36,7 +35,7 @@ func HTTPHome(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	// webrtc.RegisterDefaultCodecs()
+	//webrtc.RegisterDefaultCodecs()
 	//peerConnection, err := webrtc.New(webrtc.RTCConfiguration{
 	peerConnection, err := webrtc.NewPeerConnection(webrtc.Configuration{
 		ICEServers: []webrtc.ICEServer{
